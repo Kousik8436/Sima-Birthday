@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 export default function WhySpecial({ onNext }) {
-  const [cards, setCards] = useState([])
+  const cards = loveData.whyYouAreSpecial
   const [openId, setOpenId] = useState(null)
-
-  useEffect(() => {
-    fetch('/api/memories').then(r => r.json()).then(setCards).catch(() => setCards([]))
-  }, [])
 
   return (
     <div className="love-shell">

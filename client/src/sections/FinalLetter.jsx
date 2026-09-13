@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 export default function FinalLetter({ onNext }) {
-  const [letter, setLetter] = useState('')
-
-  useEffect(() => {
-    fetch('/api/messages').then(r => r.json()).then(d => setLetter(d.finalLetter)).catch(() => {})
-  }, [])
+  const letter = loveData.finalLetter
 
   return (
     <div className="love-shell">

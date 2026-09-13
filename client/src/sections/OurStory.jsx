@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 export default function OurStory({ onNext }) {
-  const [timeline, setTimeline] = useState([])
-
-  useEffect(() => {
-    fetch('/api/timeline').then(r => r.json()).then(setTimeline).catch(() => setTimeline([]))
-  }, [])
+  const timeline = loveData.timeline
 
   return (
     <div className="love-shell">

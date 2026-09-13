@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 const CARD_STYLES = [
   { emoji: '🌙', accent: 'from-purple-500/30 to-indigo-500/20', border: 'border-purple-300/30', tag: 'for quiet nights', size: 'sm:col-span-2' },
@@ -11,12 +12,8 @@ const CARD_STYLES = [
 ]
 
 export default function OpenWhen({ onNext }) {
-  const [letters, setLetters] = useState([])
+  const letters = loveData.openWhen
   const [openedIds, setOpenedIds] = useState([])
-
-  useEffect(() => {
-    fetch('/api/open-when').then(r => r.json()).then(setLetters).catch(() => setLetters([]))
-  }, [])
 
   const toggle = (id) => {
     setOpenedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])

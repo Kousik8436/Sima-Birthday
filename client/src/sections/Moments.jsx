@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 const ROTATIONS = [-6, 4, -3, 7, -5, 3]
 
 export default function Moments({ onNext }) {
-  const [moments, setMoments] = useState([])
+  const moments = loveData.moments
   const [selected, setSelected] = useState(null)
-
-  useEffect(() => {
-    fetch('/api/moments').then(r => r.json()).then(setMoments).catch(() => setMoments([]))
-  }, [])
 
   return (
     <div className="love-shell">

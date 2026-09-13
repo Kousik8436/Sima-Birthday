@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 export default function Hero({ onNext }) {
-  const [hero, setHero] = useState(null)
-
-  useEffect(() => {
-    fetch('/api/hero').then(r => r.json()).then(setHero).catch(() => {})
-  }, [])
+  const hero = { herName: loveData.herName, heroPhoto: loveData.heroPhoto, heroLine: loveData.heroLine }
 
   return (
     <div className="love-shell">

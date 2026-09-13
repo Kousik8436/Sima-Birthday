@@ -1,17 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { loveData } from '../loveData.js'
 
 export default function Surprise() {
-  const [surprise, setSurprise] = useState(null)
-  const [phase, setPhase] = useState('locked') // locked -> counting -> revealed
+  const surprise = loveData.surprise || { type: 'video', content: '' }
+  const [phase, setPhase] = useState('locked')
   const [count, setCount] = useState(3)
-
-  useEffect(() => {
-    fetch('/api/surprise')
-      .then((res) => res.json())
-      .then(setSurprise)
-      .catch(() => setSurprise(null))
-  }, [])
 
   const startCountdown = () => {
     setPhase('counting')
