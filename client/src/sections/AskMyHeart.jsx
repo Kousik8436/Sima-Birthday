@@ -1,5 +1,24 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { loveData } from '../loveData.js'
+
+function getReply(message) {
+  const lower = message.toLowerCase()
+  const { aiContext } = loveData
+  if (/^(hi|hello|hey|হাই|হ্যালো)\b/.test(lower.trim())) {
+    return "Hi ❤️ Ask me about his feelings, your favorite memories, or the little things he loves about you."
+  }
+  if (lower.includes('love') || lower.includes('why') || lower.includes('special') || lower.includes('কেন') || lower.includes('ভালোবাস')) {
+    return aiContext.thingsHeLoves[0]
+  }
+  if (lower.includes('memory') || lower.includes('remember') || lower.includes('favorite') || lower.includes('moment') || lower.includes('স্মৃতি')) {
+    return aiContext.favoriteMoments[1]
+  }
+  if (lower.includes('joke') || lower.includes('laugh') || lower.includes('মজা')) {
+    return aiContext.insideJokes[0]
+  }
+  return aiContext.messages[1]
+}
 
 export default function AskMyHeart({ onNext }) {
   const [messages, setMessages] = useState([
@@ -19,19 +38,10 @@ export default function AskMyHeart({ onNext }) {
     setMessages(prev => [...prev, { role: 'user', text }])
     setInput('')
     setLoading(true)
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      })
-      const data = await res.json()
-      setMessages(prev => [...prev, { role: 'bot', text: data.reply }])
-    } catch {
-      setMessages(prev => [...prev, { role: 'bot', text: "I couldn't reach my thoughts just now — try again?" }])
-    } finally {
-      setLoading(false)
-    }
+    await new Promise(r => setTimeout(r, 700))
+    const reply = getReply(text)
+    setMessages(prev => [...prev, { role: 'bot', text: reply }])
+    setLoading(false)
   }
 
   const suggestions = [

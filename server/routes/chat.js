@@ -9,7 +9,7 @@ router.post('/chat', async (req, res) => {
   const apiKey = process.env.GROQ_API_KEY
 
   if (!apiKey) {
-    return res.json({ reply: pickRandom(loveData.aiContext.messages), stub: true })
+    return res.json({ reply: getLocalReply(message), stub: true })
   }
 
   try {
@@ -34,16 +34,16 @@ router.post('/chat', async (req, res) => {
     if (!response.ok) {
       const errText = await response.text()
       console.error('Groq API error:', response.status, errText)
-      return res.json({ reply: pickRandom(loveData.aiContext.messages), stub: true })
+      return res.json({ reply: getLocalReply(message), stub: true })
     }
 
     const data = await response.json()
-    const reply = data.choices?.[0]?.message?.content || pickRandom(loveData.aiContext.messages)
+    const reply = data.choices?.[0]?.message?.content || getLocalReply(message)
 
     res.json({ reply, stub: false })
   } catch (err) {
     console.error('Chat route error:', err)
-    res.json({ reply: pickRandom(loveData.aiContext.messages), stub: true })
+    res.json({ reply: getLocalReply(message), stub: true })
   }
 })
 
@@ -64,9 +64,23 @@ Inside jokes: ${aiContext.insideJokes.join(' | ')}
 Messages: ${aiContext.messages.join(' | ')}`
 }
 
-function pickRandom(arr) {
-  if (!arr || arr.length === 0) return "I don't have an answer for that yet — add more to aiContext!"
-  return arr[Math.floor(Math.random() * arr.length)]
+function getLocalReply(message) {
+  const lower = String(message).toLowerCase().trim()
+  const { aiContext } = loveData
+
+  if (/^(hi|hello|hey|হাই|হ্যালো)\b/.test(lower)) {
+    return "Hi ❤️ Ask me about his feelings, your favorite memories, or the little things he loves about you."
+  }
+  if (lower.includes('love') || lower.includes('why') || lower.includes('special') || lower.includes('কেন') || lower.includes('ভালোবাস')) {
+    return aiContext.thingsHeLoves[0]
+  }
+  if (lower.includes('memory') || lower.includes('remember') || lower.includes('favorite') || lower.includes('moment') || lower.includes('স্মৃতি')) {
+    return aiContext.favoriteMoments[1]
+  }
+  if (lower.includes('joke') || lower.includes('laugh') || lower.includes('মজা')) {
+    return aiContext.insideJokes[0]
+  }
+  return aiContext.messages[1]
 }
 
 export default router
