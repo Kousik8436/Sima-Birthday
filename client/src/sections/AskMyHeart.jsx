@@ -4,20 +4,37 @@ import { loveData } from '../loveData.js'
 
 function getReply(message) {
   const lower = message.toLowerCase()
-  const { aiContext } = loveData
+  const { herName, aiContext } = loveData
+  const contains = (...words) => words.some(word => lower.includes(word))
+
   if (/^(hi|hello|hey|হাই|হ্যালো)\b/.test(lower.trim())) {
     return "Hi ❤️ Ask me about his feelings, your favorite memories, or the little things he loves about you."
   }
-  if (lower.includes('love') || lower.includes('why') || lower.includes('special') || lower.includes('কেন') || lower.includes('ভালোবাস')) {
-    return aiContext.thingsHeLoves[0]
+  if (contains('is he', 'does he', 'do he', 'ভালোবাসে কি', 'কি সে')) {
+    return `Yes, he does. He loves your smile, your little acts of care, and the way you understand him even when he does not say much. ❤️`
   }
-  if (lower.includes('memory') || lower.includes('remember') || lower.includes('favorite') || lower.includes('moment') || lower.includes('স্মৃতি')) {
-    return aiContext.favoriteMoments[1]
+  if (contains('why', 'love', 'special', 'কেন', 'ভালোবাস')) {
+    return `He loves you because your smile can make his whole day better, your care makes him feel special, and you are simply yourself. ❤️`
   }
-  if (lower.includes('joke') || lower.includes('laugh') || lower.includes('মজা')) {
-    return aiContext.insideJokes[0]
+  if (contains('memory', 'remember', 'favorite', 'moment', 'স্মৃতি')) {
+    return `His favorite memory is when you messaged him after he proposed and told him that you loved him too. That message made him feel like the luckiest person in the world. ❤️`
   }
-  return aiContext.messages[1]
+  if (contains('say enough', 'tell me something', 'doesn\'t say', 'বলিস না', 'বলে না')) {
+    return `He may not say it enough, but you are not just his girlfriend. You are one of the most important and special people in his life. ❤️`
+  }
+  if (contains('how did', 'meet', 'beginning', 'কীভাবে দেখা', 'শুরু')) {
+    return `Your story began at school. In class eleven, he started liking you and even joined your tuition just to see you, despite already having private tuition for that subject. 😂`
+  }
+  if (contains('propose', 'confess', 'বলেছিল', 'প্রপোজ')) {
+    return `At the end of class eleven, he finally told you how he felt. You first said no, but later your message saying you loved him too became one of his most precious memories. ❤️`
+  }
+  if (contains('joke', 'laugh', 'funny', 'মজা', 'হাস')) {
+    return `One of his favorite funny memories is joining your tuition just to see you, even though he already had a private tutor for that subject. That was a very silly and very sweet beginning. 😂`
+  }
+  if (contains('who am i', 'আমার পরিচয়')) {
+    return `You are ${herName}, the person whose smile, care, and presence turned ordinary moments into special memories for him. ❤️`
+  }
+  return `He may not have a perfect answer for every question, but one thing is clear: having you in his life gives him many reasons to smile. ${aiContext.messages[1]} ❤️`
 }
 
 export default function AskMyHeart({ onNext }) {
