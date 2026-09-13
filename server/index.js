@@ -18,8 +18,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api', contentRoutes)
 app.use('/api', chatRoutes)
 
-// Local dev
-if (process.env.NODE_ENV !== 'production') {
+// Local dev only. Vercel imports this app as a serverless function.
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 4000
   app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`)
